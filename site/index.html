@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clawdbot | 官方操作詳細指南</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<div class="lang-selector">
+    <div class="lang-btn active" data-lang="zh-TW">繁體</div>
+    <div class="lang-btn" data-lang="zh-CN">简体</div>
+    <div class="lang-btn" data-lang="en">EN</div>
+</div>
+
+<div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-container">
+            <img src="assets/logo.png" alt="Clawdbot Logo">
+            <span>Clawdbot</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#welcome" class="nav-link active" data-section="welcome"><i class="fas fa-home"></i>
+                        <span data-i18n="navHome">首頁</span></a></li>
+                <li><a href="#install" class="nav-link" data-section="install"><i class="fas fa-rocket"></i>
+                        <span data-i18n="navInstall">安裝與更新</span></a></li>
+                <li><a href="#config" class="nav-link" data-section="config"><i class="fas fa-cog"></i>
+                        <span data-i18n="navConfig">配置與環境</span></a></li>
+                <li><a href="#commands" class="nav-link" data-section="commands"><i class="fas fa-terminal"></i>
+                        <span data-i18n="navCommands">指令大全</span></a></li>
+                <li><a href="#skills" class="nav-link" data-section="skills"><i class="fas fa-puzzle-piece"></i>
+                        <span data-i18n="navSkills">技能與插件</span></a></li>
+                <li><a href="#ecosystem" class="nav-link" data-section="ecosystem"><i class="fas fa-globe"></i>
+                        <span data-i18n="navEcosystem">技能生態系</span></a></li>
+                <li><a href="#telegram" class="nav-link" data-section="telegram"><i class="fab fa-telegram-plane"></i>
+                        <span data-i18n="navTelegram">Telegram 設置</span></a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="content">
+        <!-- Welcome Section -->
+        <section id="welcome" class="active">
+            <header>
+                <h1 data-i18n="welcomeTitle">Clawdbot (Moltbot) 操作詳細指南</h1>
+                <p data-i18n="welcomeDesc">歡迎使用 Clawdbot (Moltbot)。這是一個強大的 AI 自動化工具，旨在幫助你自動化日常任務，對接多種消息平台，並賦能你的 AI
+                    代理「實操」能力。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="quickStartTitle">👋 快速開始</h2>
+                <p data-i18n="quickStartDesc">Clawdbot 不僅僅是一個對話機器人，它是你的數位操作員。通過本指南，你將學會如何從零開始部署、配置並擴展它的能力。</p>
+                <div class="tip">
+                    <strong data-i18n="tipLabel">💡 小撇步：</strong> <span
+                        data-i18n="welcomeTip">建議新手從左側的「安裝與更新」開始閱讀，確保你的本地環境已正確設置。</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Section -->
+        <section id="install">
+            <header>
+                <h1 data-i18n="installTitle">🚀 安裝與更新</h1>
+                <p data-i18n="installDesc">了解如何安裝 Clawdbot 並始終保持在最新狀態。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="initialInstallTitle">📥 初始安裝</h2>
+                <p data-i18n="initialInstallDesc">推薦使用官方一鍵安裝腳本，它會自動處理環境依賴（Node.js 22+）：</p>
+                <pre><code>curl -fsSL https://clawd.bot/install.sh | bash</code></pre>
+                <h3 data-i18n="onboardingTitle">第一次啟動：Onboarding</h3>
+                <p data-i18n="onboardingDesc">執行以下指令進入引導式設置，這將幫你初始化 Workspace：</p>
+                <pre><code>clawdbot onboard</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="updateTitle">🔄 更新方法</h2>
+                <p><strong data-i18n="globalUpdate">全局更新：</strong></p>
+                <pre><code>clawdbot update</code></pre>
+                <p><strong data-i18n="sourceUpdate">原始碼 (Git) 安裝更新：</strong></p>
+                <pre><code>git pull && pnpm install && pnpm build && pnpm ui:build</code></pre>
+            </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="config">
+            <header>
+                <h1 data-i18n="configTitle">⚙️ 配置與環境</h1>
+                <p data-i18n="configDesc">深度定制你的運行環境。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="configPathTitle">📁 配置文件與路徑</h2>
+                <ul class="feature-list">
+                    <li><strong data-i18n="configCore">核心配置:</strong> <code>~/.clawdbot/moltbot.json</code></li>
+                    <li><strong data-i18n="configSkills">技能目錄:</strong> <code>~/.clawdbot/skills</code></li>
+                    <li><strong data-i18n="configLogs">日誌目錄:</strong> <code>/tmp/moltbot/</code></li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="envTitle">🌍 關鍵環境變數</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="tableVar">變數名</th>
+                                <th data-i18n="tableDesc">描述</th>
+                                <th data-i18n="tableDefault">預設值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CLAWDBOT_CONFIG_PATH</code></td>
+                                <td data-i18n="varPathDesc">強制定制配置文件路徑</td>
+                                <td><code>~/.clawdbot/moltbot.json</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>CLAWDBOT_STATE_DIR</code></td>
+                                <td data-i18n="varStateDesc">數據狀態目錄</td>
+                                <td><code>~/.clawdbot</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>CLAWDBOT_GATEWAY_PORT</code></td>
+                                <td data-i18n="varPortDesc">Gateway 監聽端口</td>
+                                <td><code>18789</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>LOG_LEVEL</code></td>
+                                <td data-i18n="varLogDesc">日誌級別 (info, debug, warn, error)</td>
+                                <td><code>info</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="jsonExampleTitle">📑 JSON 配置示例</h2>
+                <pre><code>{
+  "channels": {
+    "whatsapp": { "dmPolicy": "pairing" },
+    "telegram": { "accounts": [ { "id": "me", "token": "..." } ] }
+  },
+  "logging": { "consoleStyle": "pretty" }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section id="commands">
+            <header>
+                <h1 data-i18n="commandsTitle">💻 指令參考大全</h1>
+                <p data-i18n="commandsDesc">Clawdbot / Moltbot 完整指令速查表。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="chatCmdTitle">💬 聊天常用 (Slash Commands)</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="tableCmd">指令</th>
+                                <th data-i18n="tableDesc">功能描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>/help</code></td>
+                                <td data-i18n="cmdHelp">顯示指南與幫助</td>
+                            </tr>
+                            <tr>
+                                <td><code>/status</code></td>
+                                <td data-i18n="cmdStatus">查看運行狀態與配額</td>
+                            </tr>
+                            <tr>
+                                <td><code>/model &lt;name&gt;</code></td>
+                                <td data-i18n="cmdModel">即時切換 AI 模型</td>
+                            </tr>
+                            <tr>
+                                <td><code>/reset</code></td>
+                                <td data-i18n="cmdReset">重置對話上下文 (New Session)</td>
+                            </tr>
+                            <tr>
+                                <td><code>/think &lt;level&gt;</code></td>
+                                <td data-i18n="cmdThink">調整模型思考深度</td>
+                            </tr>
+                            <tr>
+                                <td><code>/elevated on|off</code></td>
+                                <td data-i18n="cmdElev">開啟/關閉高權限模式</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="cliCmdTitle">🛠️ CLI 管理指令</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="tableCmd">指令</th>
+                                <th data-i18n="tableDesc">功能描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>moltbot onboard</code></td>
+                                <td data-i18n="cmdOnboard">啟動圖形/引導式設置嚮導</td>
+                            </tr>
+                            <tr>
+                                <td><code>moltbot doctor</code></td>
+                                <td data-i18n="cmdDoctor">診斷環境依賴與修復</td>
+                            </tr>
+                            <tr>
+                                <td><code>moltbot gateway</code></td>
+                                <td data-i18n="cmdGateway">手動啟動後端 Gateway</td>
+                            </tr>
+                            <tr>
+                                <td><code>moltbot channels login</code></td>
+                                <td data-i18n="cmdLogin">登錄 WhatsApp/渠道 (掃碼)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <header>
+                <h1 data-i18n="skillsTitle">🧩 技能與插件系統</h1>
+                <p data-i18n="skillsDesc">透過高度可擴展的機制強化 AI 代理的能力。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="skillsDiffTitle">💡 Skills vs Plugins</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th data-i18n="tableDesc">描述</th>
+                                <th data-i18n="tableTarget">適用場景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-i18n="typeSkill"><strong>技能 (Skill)</strong></td>
+                                <td data-i18n="skillDefDesc">具備具體功能的工具集 (Tools)</td>
+                                <td data-i18n="skillTarget">搜網、跑代碼、查文檔</td>
+                            </tr>
+                            <tr>
+                                <td data-i18n="typePlugin"><strong>插件 (Plugin)</strong></td>
+                                <td data-i18n="pluginDefDesc">底層核心擴展</td>
+                                <td data-i18n="pluginTarget">傳輸渠道、攔截消息、系統掛鉤</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="clawdhubTitle">🛒 ClawdHub 技能管理</h2>
+                <p data-i18n="clawdhubDesc">使用官方技能管理器輕鬆安裝：</p>
+                <pre><code>clawdhub install &lt;skill-name&gt;
+clawdhub update --all</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="skillApiKeyTitle">🔑 如何配置 API Key</h2>
+                <p data-i18n="skillApiKeyDesc">安裝技能後，若需要 API Key（如 OpenAI, GitHub），請在 <code>moltbot.json</code> 的
+                    <code>skills.entries</code> 中配置：
+                </p>
+                <pre><code>{
+  "skills": {
+    "entries": {
+      "github": {
+        "apiKey": "你的_TOKEN_HERE",
+        "env": { "CUSTOM_VAR": "value" }
+      }
+    }
+  }
+}</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="precedenceTitle">⚖️ 載入優先順序 (Precedence)</h2>
+                <ol>
+                    <li data-i18n="preced1">Workspace 局部技能 (Workspace Skills)</li>
+                    <li data-i18n="preced2">用戶全域技能 (~/.clawdbot/skills)</li>
+                    <li data-i18n="preced3">內置核心技能 (Bundled Skills)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Ecosystem Section -->
+        <section id="ecosystem">
+            <header>
+                <h1 data-i18n="ecoTitle">🌐 技能生態系 (Ecosystem)</h1>
+                <p data-i18n="ecoDesc">探索由社群參與貢獻的豐富技能庫。Moltbot (原 Clawdbot) 的能力由你定義。</p>
+            </header>
+
+            <div class="ecosystem-controls">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="skill-search" placeholder="搜尋技能名稱或描述...">
+                </div>
+                <div class="category-tags" id="category-tags">
+                    <!-- Tags injected by JS -->
+                </div>
+            </div>
+
+            <div class="skill-grid" id="skill-grid">
+                <!-- Skills injected by JS -->
+            </div>
+
+            <div class="tip" style="margin-top: 4rem;">
+                <strong data-i18n="moreSkillsTitle">🌟 更多技能：</strong> <span data-i18n="moreSkillsDesc">訪問 Awesome
+                    Moltbot Skills 獲取完整清單並參與貢獻。</span>
+            </div>
+        </section>
+
+        <!-- Telegram Section -->
+        <section id="telegram">
+            <header>
+                <h1 data-i18n="tgTitle">🤖 Telegram 與代理管理</h1>
+                <p data-i18n="tgDesc">連接消息平台並管理多個 AI 身份。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="tgConnTitle">✈️ Telegram 連接</h2>
+                <ol>
+                    <li data-i18n="tgStep1">從 @BotFather 獲取 Token。</li>
+                    <li data-i18n="tgStep2">運行 clawdbot onboard 並填入 Token。</li>
+                    <li data-i18n="tgStep3">啟動 Gateway 即可通訊。</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    const i18n = {
+        'zh-TW': {
+            navHome: "首頁", navInstall: "安裝與更新", navConfig: "配置與環境", navCommands: "指令大全", navSkills: "技能與插件系統", navEcosystem: "技能生態系", navTelegram: "Telegram 設置",
+            welcomeTitle: "Clawdbot (Moltbot) 操作詳細指南", welcomeDesc: "歡迎使用 Clawdbot (Moltbot)。這是一個強大的 AI 自動化工具，旨在幫助你自動化日常任務。",
+            quickStartTitle: "👋 快速開始", quickStartDesc: "Clawdbot 不僅僅是一個對話機器人，它是你的數位操作員。", tipLabel: "💡 小撇步：", welcomeTip: "建議新手從左側開始閱讀。",
+            installTitle: "🚀 安裝與更新", installDesc: "了解如何安裝並保持最新。", initialInstallTitle: "📥 初始安裝", initialInstallDesc: "推薦使用官方一鍵安裝腳本：", onboardingTitle: "第一次啟動：Onboarding", onboardingDesc: "執行以下指令進入引導式設置：",
+            ecoTitle: "🌐 技能生態系 (Ecosystem)", ecoDesc: "探索由社群參與貢獻的豐富技能庫。", searchPlaceholder: "搜尋技能名稱或描述...", all: "全部",
+            moreSkillsTitle: "🌟 更多技能：", moreSkillsDesc: "訪問 Awesome Moltbot Skills 獲取完整清單並參與貢獻。",
+            configTitle: "⚙️ 配置與環境", configDesc: "深度定制你的運行環境。", configPathTitle: "📁 配置文件與路徑",
+            configCore: "核心配置", configSkills: "技能目錄", configLogs: "日誌目錄",
+            envTitle: "🌍 關鍵環境變數", tableVar: "變數名", tableDesc: "描述", tableDefault: "預設值",
+            varPathDesc: "強制定制配置文件路徑", varStateDesc: "數據狀態目錄", varPortDesc: "Gateway 監聽端口", varLogDesc: "日誌級別 (info, debug, warn, error)",
+            jsonExampleTitle: "📑 JSON 配置示例",
+            commandsTitle: "💻 指令參考大全", commandsDesc: "Clawdbot / Moltbot 完整指令速查表。",
+            chatCmdTitle: "💬 聊天常用 (Slash Commands)", cliCmdTitle: "🛠️ CLI 管理指令",
+            tableCmd: "指令", cmdHelp: "顯示指南與幫助", cmdStatus: "查看運行狀態與配額", cmdModel: "即時切換 AI 模型", cmdReset: "重置對話上下文 (New Session)", cmdThink: "調整模型思考深度", cmdElev: "開啟/關閉高權限模式",
+            cmdOnboard: "啟動圖形/引導式設置嚮導", cmdDoctor: "診斷環境依賴與修復", cmdGateway: "手動啟動後端 Gateway", cmdLogin: "登錄 WhatsApp/渠道 (掃碼)",
+            skillsTitle: "🧩 技能與插件系統", skillsDesc: "透過高度可擴展的機制強化 AI 代理的能力。",
+            skillsDiffTitle: "💡 Skills vs Plugins", tableTarget: "適用場景",
+            typeSkill: "技能 (Skill)", skillDefDesc: "具備具體功能的工具集 (Tools)", skillTarget: "搜網、跑代碼、查文檔",
+            typePlugin: "插件 (Plugin)", pluginDefDesc: "底層核心擴展", pluginTarget: "傳輸渠道、攔截消息、系統掛鉤",
+            clawdhubTitle: "🛒 ClawdHub 技能管理", clawdhubDesc: "使用官方技能管理器輕鬆安裝：",
+            skillApiKeyTitle: "🔑 如何配置 API Key", skillApiKeyDesc: "安裝技能後，若需要 API Key（如 OpenAI, GitHub），請在 moltbot.json 的 skills.entries 中配置：",
+            precedenceTitle: "⚖️ 載入優先順序 (Precedence)", preced1: "Workspace 局部技能 (Workspace Skills)", preced2: "用戶全域技能 (~/.clawdbot/skills)", preced3: "內置核心技能 (Bundled Skills)",
+            tgTitle: "🤖 Telegram 與代理管理", tgDesc: "連接消息平台並管理多個 AI 身份。", tgConnTitle: "✈️ Telegram 連接", tgStep1: "從 @BotFather 獲取 Token。", tgStep2: "運行 onboard 指令。", tgStep3: "啟動 Gateway。"
+        },
+        'zh-CN': {
+            navHome: "首页", navInstall: "安装与更新", navConfig: "配置与环境", navCommands: "指令大全", navSkills: "技能与插件系统", navEcosystem: "技能生态系", navTelegram: "Telegram 设置",
+            welcomeTitle: "Clawdbot (Moltbot) 操作详细指南", welcomeDesc: "欢迎使用 Clawdbot (Moltbot)。这是一个强大的 AI 自动化工具，旨在帮助你自动化日常任务。",
+            quickStartTitle: "👋 快速开始", quickStartDesc: "Clawdbot 不仅仅是一个对话机器人，它是你的数字操作员。", tipLabel: "💡 小贴士：", welcomeTip: "建议新手從左侧开始阅读。",
+            installTitle: "🚀 安装 with 更新", installDesc: "了解如何安装并保持最新。", initialInstallTitle: "📥 初始安装", initialInstallDesc: "推荐使用官方一键安装脚本：", onboardingTitle: "第一次启动：Onboarding", onboardingDesc: "执行以下指令进入引导式设置：",
+            ecoTitle: "🌐 技能生态系 (Ecosystem)", ecoDesc: "探索由社区参与贡献的丰富技能库。", searchPlaceholder: "搜索技能名称或描述...", all: "全部",
+            moreSkillsTitle: "🌟 更多技能：", moreSkillsDesc: "访问 Awesome Moltbot Skills 获取完整清单并参与贡献。",
+            configTitle: "⚙️ 配置与环境", configDesc: "深度定制你的运行环境。", configPathTitle: "📁 配置文件与路径",
+            configCore: "核心配置", configSkills: "技能目录", configLogs: "日志目录",
+            envTitle: "🌍 关键环境变量", tableVar: "变量名", tableDesc: "描述", tableDefault: "默认值",
+            varPathDesc: "强制定制配置文件路径", varStateDesc: "数据状态目录", varPortDesc: "Gateway 监听端口", varLogDesc: "日志级别 (info, debug, warn, error)",
+            jsonExampleTitle: "📑 JSON 配置示例",
+            commandsTitle: "💻 指令参考大全", commandsDesc: "Clawdbot / Moltbot 完整指令速查表。",
+            chatCmdTitle: "💬 聊天常用 (Slash Commands)", cliCmdTitle: "🛠️ CLI 管理指令",
+            tableCmd: "指令", cmdHelp: "显示指南与帮助", cmdStatus: "查看运行状态与配额", cmdModel: "即时切换 AI 模型", cmdReset: "重置对话上下文 (New Session)", cmdThink: "调整模型思考深度", cmdElev: "开启/关闭高权限模式",
+            cmdOnboard: "启动图形/引导式设置向导", cmdDoctor: "诊断环境依赖与修复", cmdGateway: "手动启动后端 Gateway", cmdLogin: "登录 WhatsApp/渠道 (扫码)",
+            skillsTitle: "🧩 技能与插件系统", skillsDesc: "通过高度可扩展的机制强化 AI 代理的能力。",
+            skillsDiffTitle: "💡 Skills vs Plugins", tableTarget: "适用场景",
+            typeSkill: "技能 (Skill)", skillDefDesc: "具备具体功能的工具集 (Tools)", skillTarget: "搜网、跑代码、查文档",
+            typePlugin: "插件 (Plugin)", pluginDefDesc: "底层核心扩展", pluginTarget: "传输渠道、拦截消息、系统钩子",
+            clawdhubTitle: "🛒 ClawdHub 技能管理", clawdhubDesc: "使用官方技能管理器轻松安装：",
+            skillApiKeyTitle: "🔑 如何配置 API Key", skillApiKeyDesc: "安装技能后，若需要 API Key（如 OpenAI, GitHub），请在 moltbot.json 的 skills.entries 中配置：",
+            precedenceTitle: "⚖️ 载入优先顺序 (Precedence)", preced1: "Workspace 局部技能 (Workspace Skills)", preced2: "用户全局技能 (~/.clawdbot/skills)", preced3: "内置核心技能 (Bundled Skills)",
+            tgTitle: "🤖 Telegram 与代理管理", tgDesc: "连接消息平台并管理多个 AI 身份。", tgConnTitle: "✈️ Telegram 连接", tgStep1: "从 @BotFather 获取 Token。", tgStep2: "运行 onboard 指令。", tgStep3: "启动 Gateway。"
+        },
+        'en': {
+            navHome: "Home", navInstall: "Install & Update", navConfig: "Config & Env", navCommands: "Commands", navSkills: "Skills & Plugins", navEcosystem: "Ecosystem", navTelegram: "Telegram Setup",
+            welcomeTitle: "Clawdbot (Moltbot) Detailed Guide", welcomeDesc: "Welcome to Clawdbot. A powerful AI automation tool built to handle your daily tasks.",
+            quickStartTitle: "👋 Quick Start", quickStartDesc: "Clawdbot is more than a chatbot; it's your digital operator.", tipLabel: "💡 Pro Tip:", welcomeTip: "New users should start with the Installation guide.",
+            installTitle: "🚀 Install & Update", installDesc: "Learn how to install and stay updated.", initialInstallTitle: "📥 Initial Install", initialInstallDesc: "Recommended one-line installer:", onboardingTitle: "First Launch: Onboarding", onboardingDesc: "Run the setup wizard to initialize:",
+            ecoTitle: "🌐 Skill Ecosystem", ecoDesc: "Explore a rich library of community-contributed skills.", searchPlaceholder: "Search skills or descriptions...", all: "All",
+            moreSkillsTitle: "🌟 More Skills:", moreSkillsDesc: "Visit Awesome Moltbot Skills for the full list.",
+            configTitle: "⚙️ Config & Env", configDesc: "Deeply customize your runtime environment.", configPathTitle: "📁 Configuration & Paths",
+            configCore: "Core Config", configSkills: "Skills Directory", configLogs: "Logs Directory",
+            envTitle: "🌍 Key Env Variables", tableVar: "Variable", tableDesc: "Description", tableDefault: "Default",
+            varPathDesc: "Force custom config path", varStateDesc: "Data state directory", varPortDesc: "Gateway listener port", varLogDesc: "Log level (info, debug, warn, error)",
+            jsonExampleTitle: "📑 JSON Config Example",
+            commandsTitle: "💻 Commands Reference", commandsDesc: "Clawdbot / Moltbot complete command cheatsheet.",
+            chatCmdTitle: "💬 Chat Usage (Slash Commands)", cliCmdTitle: "🛠️ CLI Management",
+            tableCmd: "Command", cmdHelp: "Show guide and help", cmdStatus: "Check status and quota", cmdModel: "Switch AI model instantly", cmdReset: "Reset context (New Session)", cmdThink: "Adjust thinking depth", cmdElev: "Toggle elevated mode",
+            cmdOnboard: "Start setup wizard", cmdDoctor: "Environment diagnostics", cmdGateway: "Start Gateway manually", cmdLogin: "Login to WhatsApp/Channel",
+            skillsTitle: "🧩 Skills & Plugins", skillsDesc: "Extend AI agent capabilities via a modular system.",
+            skillsDiffTitle: "💡 Skills vs Plugins", tableTarget: "Target Use",
+            typeSkill: "Skill", skillDefDesc: "Functional tools for the agent", skillTarget: "Web search, code exec, docs",
+            typePlugin: "Plugin", pluginDefDesc: "Core engine extensions", pluginTarget: "New channels, message hooks",
+            clawdhubTitle: "🛒 ClawdHub Management", clawdhubDesc: "Manage skills via the official manager:",
+            skillApiKeyTitle: "🔑 How to Config API Keys", skillApiKeyDesc: "After installing, if a skill needs an API Key (e.g. OpenAI), config it in moltbot.json under skills.entries:",
+            precedenceTitle: "⚖️ Load Precedence", preced1: "Workspace Local Skills", preced2: "User Global Skills", preced3: "Bundled Core Skills",
+            tgTitle: "🤖 Telegram & Agent Mgmt", tgDesc: "Connect messaging platforms and manage identities.", tgConnTitle: "✈️ Telegram Connection", tgStep1: "Get token from @BotFather.", tgStep2: "Run onboard with token.", tgStep3: "Start the Gateway."
+        }
+    };
+
+    const skillData = [
+        {
+            name: "github",
+            category: { "zh-TW": "Git 與 GitHub", "zh-CN": "Git 与 GitHub", "en": "Git & GitHub" },
+            desc: {
+                "zh-TW": "使用 gh CLI 進行 GitHub 交互：PR、Issues、倉庫管理。",
+                "zh-CN": "使用 gh CLI 进行 GitHub 交互：PR、Issues、仓库管理。",
+                "en": "Interact with GitHub using the gh CLI - PRs, issues, repos."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/steipete/github/SKILL.md"
+        },
+        {
+            name: "conventional-commits",
+            category: { "zh-TW": "Git 與 GitHub", "zh-CN": "Git 与 GitHub", "en": "Git & GitHub" },
+            desc: {
+                "zh-TW": "遵循 Conventional Commits 規範格式化提交信息。",
+                "zh-CN": "遵循 Conventional Commits 规范格式化提交信息。",
+                "en": "Format commit messages using the Conventional Commits specification."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/bastos/conventional-commits/SKILL.md"
+        },
+        {
+            name: "gemini",
+            category: { "zh-TW": "AI 與 大模型", "zh-CN": "AI 与 大模型", "en": "AI & LLMs" },
+            desc: {
+                "zh-TW": "Gemini CLI：支持問答、摘要及內容生成。",
+                "zh-CN": "Gemini CLI：支持问答、摘要及内容生成。",
+                "en": "Gemini CLI for one-shot Q&A, summaries, and generation."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/steipete/gemini/SKILL.md"
+        },
+        {
+            name: "perplexity",
+            category: { "zh-TW": "AI 與 大模型", "zh-CN": "AI 与 大模型", "en": "AI & LLMs" },
+            desc: {
+                "zh-TW": "通過 Perplexity API 進行 AI 驅動的網頁搜索。",
+                "zh-CN": "通过 Perplexity API 进行 AI 驱动的网页搜索。",
+                "en": "Search the web with AI-powered answers via Perplexity API."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/zats/perplexity/SKILL.md"
+        },
+        {
+            name: "apple-notes",
+            category: { "zh-TW": "Apple 與 Mac", "zh-CN": "Apple 与 Mac", "en": "Apple & Mac" },
+            desc: {
+                "zh-TW": "在 macOS 上管理 Apple 備忘錄內容。",
+                "zh-CN": "在 macOS 上管理 Apple 备忘录内容。",
+                "en": "Manage Apple Notes via memo CLI on macOS."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/steipete/apple-notes/SKILL.md"
+        },
+        {
+            name: "brave-search",
+            category: { "zh-TW": "搜索與媒體", "zh-CN": "搜索与媒体", "en": "Search & Media" },
+            desc: {
+                "zh-TW": "全面網頁搜索與內容抓取 (Brave Search API)。",
+                "zh-CN": "全面网页搜索与内容抓取 (Brave Search API)。",
+                "en": "Web search and content extraction via Brave Search API."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/bert-builder/brave-search/SKILL.md"
+        },
+        {
+            name: "linear",
+            category: { "zh-TW": "生產力", "zh-CN": "生产力", "en": "Productivity" },
+            desc: {
+                "zh-TW": "管理 Linear Issues、專案與團隊流程。",
+                "zh-CN": "管理 Linear Issues、项目与团队流程。",
+                "en": "Query and manage Linear issues, projects, and cycles."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/manuelhettich/linear/SKILL.md"
+        },
+        {
+            name: "tesla",
+            category: { "zh-TW": "旅遊與工具", "zh-CN": "旅游与工具", "en": "Travel & Utilities" },
+            desc: {
+                "zh-TW": "Tesla 車輛控制：解鎖、空調、定位及充電管理。",
+                "zh-CN": "Tesla 车辆控制：解锁、空调、定位及充电管理。",
+                "en": "Control Tesla vehicles - lock, climate, location, charge."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/mvanhorn/tesla/SKILL.md"
+        },
+        {
+            name: "vercel",
+            category: { "zh-TW": "運維與雲端", "zh-CN": "运维与云端", "en": "DevOps" },
+            desc: {
+                "zh-TW": "使用 Vercel CLI 部署應用並管理專案。",
+                "zh-CN": "使用 Vercel CLI 部署应用并管理项目。",
+                "en": "Deploy applications and manage projects with Vercel CLI."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/thesethrose/vercel/SKILL.md"
+        },
+        {
+            name: "crypto-price",
+            category: { "zh-TW": "金融與加密貨幣", "zh-CN": "金融与加密货币", "en": "Finance & Crypto" },
+            desc: {
+                "zh-TW": "透過 CoinGecko 獲取代幣價格與 K 線圖。",
+                "zh-CN": "通过 CoinGecko 获取代币价格与 K 线图。",
+                "en": "Get token prices and candlestick charts via CoinGecko."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/evgyur/crypto-price/SKILL.md"
+        },
+        {
+            name: "homebrew",
+            category: { "zh-TW": "Apple 與 Mac", "zh-CN": "Apple 与 Mac", "en": "Apple & Mac" },
+            desc: {
+                "zh-TW": "macOS 包管理器：搜尋、安裝與管理軟體包。",
+                "zh-CN": "macOS 包管理器：搜索、安装与管理软件包。",
+                "en": "Package manager for macOS. Search, install, and manage packages."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/thesethrose/homebrew/SKILL.md"
+        },
+        {
+            name: "summarize",
+            category: { "zh-TW": "搜索與媒體", "zh-CN": "搜索与媒体", "en": "Search & Media" },
+            desc: {
+                "zh-TW": "快速摘要網址、PDF、圖片及 YouTube 影片內容。",
+                "zh-CN": "快速摘要网址、PDF、图片及 YouTube 视频内容。",
+                "en": "Summarize URLs, PDFs, images, and YouTube videos."
+            },
+            url: "https://github.com/clawdbot/skills/tree/main/skills/steipete/summarize/SKILL.md"
+        }
+    ];
+
+    let currentLang = 'zh-TW';
+
+    function updateUI() {
+        // Update static elements
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[currentLang][key]) {
+                el.textContent = i18n[currentLang][key];
+            }
+        });
+
+        // Update placeholders
+        document.getElementById('skill-search').placeholder = i18n[currentLang].searchPlaceholder;
+
+        // Re-render skills and categories
+        renderTags();
+        filterSkills();
+    }
+
+    // Language toggle
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentLang = btn.getAttribute('data-lang');
+            updateUI();
+        });
+    });
+
+    // Skill rendering
+    const tagsContainer = document.getElementById('category-tags');
+    const grid = document.getElementById('skill-grid');
+    const searchInput = document.getElementById('skill-search');
+
+    function renderTags() {
+        const rawCats = [...new Set(skillData.map(s => s.category[currentLang]))];
+        const categories = [i18n[currentLang].all, ...rawCats];
+
+        tagsContainer.innerHTML = categories.map((cat, i) =>
+            `<div class="tag ${i === 0 ? 'active' : ''}" data-category-localized="${cat}">${cat}</div>`
+        ).join('');
+
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+                filterSkills();
+            });
+        });
+    }
+
+    function renderSkills(filtered) {
+        grid.innerHTML = filtered.map(skill => `
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <a href="${skill.url}" target="_blank" class="skill-name">${skill.name}</a>
+                        <span class="skill-category-pill">${skill.category[currentLang]}</span>
+                    </div>
+                    <p class="skill-desc">${skill.desc[currentLang]}</p>
+                </div>
+            `).join('');
+    }
+
+    function filterSkills() {
+        const term = searchInput.value.toLowerCase();
+        const activeCat = document.querySelector('.tag.active').getAttribute('data-category-localized');
+
+        const filtered = skillData.filter(s => {
+            const sName = s.name.toLowerCase();
+            const sDesc = s.desc[currentLang].toLowerCase();
+            const matchSearch = sName.includes(term) || sDesc.includes(term);
+            const matchCat = activeCat === i18n[currentLang].all || s.category[currentLang] === activeCat;
+            return matchSearch && matchCat;
+        });
+        renderSkills(filtered);
+    }
+
+    searchInput.addEventListener('input', filterSkills);
+
+    // Sidebar Navigation
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = link.getAttribute('data-section');
+            const targetSection = document.getElementById(sectionId);
+
+            if (targetSection) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+                targetSection.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                console.error(`Section with ID "${sectionId}" not found.`);
+            }
+        });
+    });
+
+    // Init
+    updateUI();
+</script>
+</body>
+
+</html>

@@ -1,7 +1,15 @@
-node_modules
-dist
-.DS_Store
-.env
+# Exclude documentation
+docs/
 
-# Ignore the output video from Git but not videos you import into src/.
-out
+# Exclude Claude-specific files
+.claude/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build/Dev leftovers (generic)
+node_modules/
+dist/
+build/
+.env
