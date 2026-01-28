@@ -36,8 +36,22 @@
                         <span data-i18n="navSkills">技能與插件</span></a></li>
                 <li><a href="#ecosystem" class="nav-link" data-section="ecosystem"><i class="fas fa-globe"></i>
                         <span data-i18n="navEcosystem">技能生態系</span></a></li>
-                <li><a href="#telegram" class="nav-link" data-section="telegram"><i class="fab fa-telegram-plane"></i>
-                        <span data-i18n="navTelegram">Telegram 設置</span></a></li>
+                <li><a href="#sessions" class="nav-link" data-section="sessions"><i class="fas fa-comments"></i>
+                        <span data-i18n="navSessions">會話與代理</span></a></li>
+                <li><a href="#automation" class="nav-link" data-section="automation"><i class="fas fa-clock"></i>
+                        <span data-i18n="navAutomation">自動化任務</span></a></li>
+                <li><a href="#advanced" class="nav-link" data-section="advanced"><i class="fas fa-microchip"></i>
+                        <span data-i18n="navAdvanced">高級功能</span></a></li>
+                <li><a href="#channels" class="nav-link" data-section="channels"><i class="fas fa-plug"></i>
+                        <span data-i18n="navChannels">渠道配置</span></a></li>
+                <li><a href="#memory" class="nav-link" data-section="memory"><i class="fas fa-brain"></i>
+                        <span data-i18n="navMemory">記憶系統</span></a></li>
+                <li><a href="#troubleshooting" class="nav-link" data-section="troubleshooting"><i class="fas fa-bug"></i>
+                        <span data-i18n="navTroubleshooting">故障排查</span></a></li>
+                <li><a href="#developer" class="nav-link" data-section="developer"><i class="fas fa-code"></i>
+                        <span data-i18n="navDeveloper">開發者指南</span></a></li>
+                <li><a href="#security" class="nav-link" data-section="security"><i class="fas fa-shield-alt"></i>
+                        <span data-i18n="navSecurity">安全與合規</span></a></li>
             </ul>
         </nav>
     </aside>
@@ -330,13 +344,415 @@ clawdhub update --all</code></pre>
                 </ol>
             </div>
         </section>
+
+        <!-- Sessions Section -->
+        <section id="sessions">
+            <header>
+                <h1 data-i18n="sessionsTitle">💬 會話與代理管理</h1>
+                <p data-i18n="sessionsDesc">理解會話隔離、多代理路由與子代理系統。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="sessionConceptTitle">🧠 會話概念</h2>
+                <p data-i18n="sessionConceptDesc">Clawdbot 使用會話隔離來管理不同對話的上下文：</p>
+                <ul class="feature-list">
+                    <li><strong data-i18n="sessionMain">主會話：</strong> 所有私聊共用同一個會話（預設行為），保持連續性。</li>
+                    <li><strong data-i18n="sessionGroup">群組會話：</strong> 每個群組/頻道獨立會話，互不干擾。</li>
+                    <li><strong data-i18n="sessionSubagent">子代理：</strong> 在背景啟動獨立會話處理長任務。</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="sessionScopeTitle">📋 會話範圍控制</h2>
+                <pre><code>{
+  "session": {
+    "dmScope": "main",  // main | per-peer | per-channel-peer
+    "mainKey": "main"
+  }
+}</code></pre>
+                <p data-i18n="dmScopeDesc">dmScope 選項：</p>
+                <ul>
+                    <li><code>main</code>（預設）：所有私聊共用主會話</li>
+                    <li><code>per-peer</code>：按發送者隔離</li>
+                    <li><code>per-channel-peer</code>：按頻道+發送者隔離（推薦多用戶收件匣）</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="subagentTitle">🔧 子代理系統</h2>
+                <p data-i18n="subagentDesc">使用 <code>/subagents</code> 指令管理子代理：</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>指令</th>
+                                <th>功能</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>/subagents list</code></td><td>列出所有運行中的子代理</td></tr>
+                            <tr><td><code>/subagents stop &lt;id&gt;</code></td><td>停止指定的子代理</td></tr>
+                            <tr><td><code>/subagents log &lt;id&gt;</code></td><td>查看子代理日誌</td></tr>
+                            <tr><td><code>/subagents send &lt;id&gt; &lt;msg&gt;</code></td><td>向子代理發送消息</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="sessionResetTitle">🔄 會話重置策略</h2>
+                <pre><code>{
+  "session": {
+    "reset": {
+      "mode": "daily",
+      "atHour": 4,
+      "idleMinutes": 120
+    }
+  }
+}</code></pre>
+                <p data-i18n="resetDesc">重置模式：</p>
+                <ul>
+                    <li><code>daily</code>：每天指定時間重置</li>
+                    <li><code>idle</code>：空閒指定分鐘數後重置</li>
+                    <li>同時設置時，先到期者觸發</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Automation Section -->
+        <section id="automation">
+            <header>
+                <h1 data-i18n="automationTitle">⏰ 自動化與定時任務</h1>
+                <p data-i18n="automationDesc">使用 Cron 和 Heartbeat 實現自動化工作流。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="cronTitle">📅 Cron 定時任務</h2>
+                <p data-i18n="cronDesc">Cron 是 Gateway 內建的定時器，支援一次性提醒和週期性任務：</p>
+                <h3>一次性提醒</h3>
+                <pre><code># 20 分鐘後提醒
+moltbot cron add --name "提醒" --at "20m" --session main \\
+  --system-event "提醒我：提交報告" --wake now</code></pre>
+                <h3>週期性任務</h3>
+                <pre><code># 每天早上 7 點發送 WhatsApp 摘要
+moltbot cron add --name "晨間摘要" --cron "0 7 * * *" \\
+  --session isolated --message "總結今天的重要資訊" \\
+  --deliver --channel whatsapp --to "+15551234567"</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="heartbeatTitle">💓 Heartbeat 心跳機制</h2>
+                <p data-i18n="heartbeatDesc">Heartbeat 是週期性檢查的批次處理機制，適合多個輕量級任務：</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="tableFeature">特性</th>
+                                <th>Cron</th>
+                                <th>Heartbeat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td data-i18n="timingRow">精確時間</td><td>✅</td><td>❌</td></tr>
+                            <tr><td data-i18n="batchRow">批次處理</td><td>❌</td><td>✅</td></tr>
+                            <tr><td data-i18n="sessionRow">主會話上下文</td><td>選擇性</td><td>✅</td></tr>
+                            <tr><td data-i18n="independentRow">獨立隔離</td><td>✅</td><td>❌</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p data-i18n="whenCron">使用 Cron 當：</p>
+                <ul>
+                    <li>需要精確時間（"每天 9:00 AM"）</li>
+                    <li>一鍵提醒（"20 分鐘後提醒我"）</li>
+                    <li>需要完全隔離的會話</li>
+                </ul>
+                <p data-i18n="whenHeartbeat">使用 Heartbeat 當：</p>
+                <ul>
+                    <li>多個檢查可以批次處理</li>
+                    <li>需要對話上下文</li>
+                    <li>時間可以輕微漂移</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="cronManageTitle">🔧 Cron 管理指令</h2>
+                <pre><code># 列出所有任務
+moltbot cron list
+
+# 手動執行任務
+moltbot cron run &lt;jobId&gt; --force
+
+# 編輯任務
+moltbot cron edit &lt;jobId&gt; --message "新提示" --model "opus"
+
+# 刪除任務
+moltbot cron remove &lt;jobId&gt;</code></pre>
+            </div>
+        </section>
+
+        <!-- Advanced Section -->
+        <section id="advanced">
+            <header>
+                <h1 data-i18n="advancedTitle">🚀 高級功能模組</h1>
+                <p data-i18n="advancedDesc">探索 Canvas、Nodes、瀏覽器控制等強大功能。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="canvasTitle">🖼️ Canvas 系統</h2>
+                <p data-i18n="canvasDesc">Canvas 可以在節點上展示 HTML 頁面並進行快照：</p>
+                <pre><code># 展示網頁
+moltbot nodes canvas present --node &lt;id&gt; --target https://example.com
+
+# 快照截圖
+moltbot nodes canvas snapshot --node &lt;id&gt; --format png
+
+# 導航到新 URL
+moltbot nodes canvas navigate --node &lt;id&gt; https://example.com</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="nodesTitle">📱 Nodes 節點管理</h2>
+                <p data-i18n="nodesDesc">Nodes 是連接到 Gateway 的設備（iOS/Android/macOS）：</p>
+                <pre><code># 列出所有節點
+moltbot nodes list
+
+# 查看節點詳情
+moltbot nodes describe --node &lt;id&gt;
+
+# 相機拍照
+moltbot nodes camera snap --node &lt;id&gt; --facing front
+
+# 錄製屏幕
+moltbot nodes screen record --node &lt;id&gt; --duration 10s</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="browserTitle">🌐 瀏覽器控制</h2>
+                <p data-i18n="browserDesc">透過瀏覽器工具自動化網頁操作：</p>
+                <pre><code># 啟動瀏覽器
+moltbot browser start
+
+# 導航到網頁
+moltbot browser open https://example.com
+
+# 快照頁面
+moltbot browser snapshot
+
+# 執行動作
+moltbot browser act --kind click --targetId "submit-btn"</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="ttsTitle">🔊 語音合成 (TTS)</h2>
+                <p data-i18n="ttsDesc">使用 ElevenLabs 生成自然語音：</p>
+                <pre><code># 對話中開啟 TTS
+/tts always
+
+# 標記需要語音
+/message "這段話用語音說" --tts</code></pre>
+            </div>
+        </section>
+
+        <!-- Channels Section -->
+        <section id="channels">
+            <header>
+                <h1 data-i18n="channelsTitle">🔌 渠道深度配置</h1>
+                <p data-i18n="channelsDesc">詳細配置各個消息平台的功能與限制。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="telegramConfigTitle">✈️ Telegram 配置</h2>
+                <p data-i18n="telegramConfigDesc">Telegram 支援豐富的功能：</p>
+                <ul class="feature-list">
+                    <li><strong data-i18n="tgInline">內聯按鈕：</strong> 發送帶按鈕的訊息</li>
+                    <li><strong data-i18n="tgPoll">投票：</strong> 創建投票並收集結果</li>
+                    <li><strong data-i18n="tgReply">回覆：</strong> 回覆指定訊息</li>
+                    <li><strong data-i18n="tgReact">表情反應：</strong> 添加表情反應</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="whatsappConfigTitle">💬 WhatsApp 配置</h2>
+                <p data-i18n="whatsappConfigDesc">WhatsApp 使用 Web 協議連接：</p>
+                <pre><code>{
+  "channels": {
+    "whatsapp": {
+      "dmPolicy": "pairing",
+      "groups": {
+        "*": { "requireMention": true }
+      }
+    }
+  }
+}</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="discordConfigTitle">🎮 Discord 配置</h2>
+                <p data-i18n="discordConfigDesc">Discord 支援伺服器和語音頻道：</p>
+                <pre><code>{
+  "channels": {
+    "discord": {
+      "token": "YOUR_BOT_TOKEN",
+      "commands": {
+        "native": true
+      }
+    }
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Memory Section -->
+        <section id="memory">
+            <header>
+                <h1 data-i18n="memoryTitle">🧠 記憶系統</h1>
+                <p data-i18n="memoryDesc">理解短期記憶與長期記憶的區別與使用方法。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="memoryTypesTitle">📋 記憶類型</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>類型</th>
+                                <th>位置</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Daily Notes</strong></td>
+                                <td><code>memory/YYYY-MM-DD.md</code></td>
+                                <td>原始日誌，詳細記錄</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Long-term</strong></td>
+                                <td><code>MEMORY.md</code></td>
+                                <td>策展記憶，精煉智慧</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="memoryBestTitle">💡 最佳實踐</h2>
+                <ul>
+                    <li data-i18n="memPrac1"><strong>記錄重要事件：</strong> 決策、偏好、教訓</li>
+                    <li data-i18n="memPrac2"><strong>定期整理：</strong> 每幾天審查 daily notes 並更新 MEMORY.md</li>
+                    <li data-i18n="memPrac3"><strong>安全考量：</strong> 主會話載入，群聊不載入（防止洩密）</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="memoryUsageTitle">🔍 記憶檢索</h2>
+                <p data-i18n="memoryUsageDesc">AI 會自動檢索相關記憶：</p>
+                <pre><code># 搜尋關鍵字
+memory_search "關於 X 的決策"
+
+# 讀取特定行
+memory_get MEMORY.md --from 1 --lines 50</code></pre>
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting">
+            <header>
+                <h1 data-i18n="troubleshootingTitle">🔧 故障排查與調試</h1>
+                <p data-i18n="troubleshootingDesc">常見問題與解決方案。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="diagnosticTitle">🩺 診斷工具</h2>
+                <pre><code># 檢查狀態
+moltbot status
+
+# 健康檢查
+moltbot health
+
+# 安全審計
+moltbot security audit</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="commonIssuesTitle">❓ 常見問題</h2>
+                <h3>Gateway 無法啟動</h3>
+                <p>檢查端口是否被佔用：</p>
+                <pre><code>lsof -i :18789</code></pre>
+                <h3>訊息無回應</h3>
+                <p>檢查認證配置：</p>
+                <pre><code>moltbot pairing list
+moltbot pairing approve &lt;channel&gt; &lt;code&gt;</code></pre>
+                <h3>技能無法載入</h3>
+                <p>檢查依賴：</p>
+                <pre><code>moltbot doctor</code></pre>
+            </div>
+        </section>
+
+        <!-- Developer Section -->
+        <section id="developer">
+            <header>
+                <h1 data-i18n="developerTitle">💻 開發者指南</h1>
+                <p data-i18n="developerDesc">如何開發自定義技能與插件。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="skillDevTitle">📝 開發自定義技能</h2>
+                <p data-i18n="skillDevDesc">技能是包含 SKILL.md 的目錄：</p>
+                <pre><code>my-skill/
+├── SKILL.md
+├── package.json
+└── index.js</code></pre>
+                <p>SKILL.md 格式：</p>
+                <pre><code>---
+name: my-skill
+description: 我的自定義技能
+metadata: {"moltbot":{"requires":{"bins":["node"]}}}
+---
+
+這是技能的指令內容...</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="pluginDevTitle">🔌 開發插件</h2>
+                <p data-i18n="pluginDevDesc">插件擴展核心功能（新增渠道等）：</p>
+                <pre><code>my-plugin/
+├── moltbot.plugin.json
+├── package.json
+└── src/
+    └── channel.js</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="devTestTitle">🧪 測試與調試</h2>
+                <pre><code># 本地測試技能
+moltbot skill test ./my-skill
+
+# 查看日誌
+tail -f /tmp/moltbot/moltbot-*.log</code></pre>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security">
+            <header>
+                <h1 data-i18n="securityTitle">🔒 安全與合規</h1>
+                <p data-i18n="securityDesc">保護你的資料與系統安全。</p>
+            </header>
+            <div class="content-block">
+                <h2 data-i18n="securityAuditTitle">🛡️ 安全審計</h2>
+                <p data-i18n="securityAuditDesc">定期運行安全審計：</p>
+                <pre><code>moltbot security audit
+moltbot security audit --deep
+moltbot security audit --fix</code></pre>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="securityRulesTitle">📜 安全規則</h2>
+                <ul>
+                    <li data-i18n="secRule1"><strong>訪問控制優先：</strong> 先決定誰可以對話，再決定可以做什麼</li>
+                    <li data-i18n="secRule2"><strong>沙箱執行：</strong> 敏感工具在沙箱中運行</li>
+                    <li data-i18n="secRule3"><strong>最小權限：</strong> 只給予必要的訪問權限</li>
+                    <li data-i18n="secRule4"><strong>日誌審計：</strong> 定期檢查工具調用日誌</li>
+                </ul>
+            </div>
+            <div class="content-block">
+                <h2 data-i18n="incidentTitle">🚨 事故響應</h2>
+                <p data-i18n="incidentDesc">如果懷疑被入侵：</p>
+                <ol>
+                    <li>停止 Gateway</li>
+                    <li>鎖定訪問控制</li>
+                    <li>輪換所有金鑰</li>
+                    <li>審計日誌</li>
+                    <li>重新審計安全</li>
+                </ol>
+            </div>
+        </section>
     </main>
 </div>
 
 <script>
     const i18n = {
         'zh-TW': {
-            navHome: "首頁", navInstall: "安裝與更新", navConfig: "配置與環境", navCommands: "指令大全", navSkills: "技能與插件系統", navEcosystem: "技能生態系", navTelegram: "Telegram 設置",
+            navHome: "首頁", navInstall: "安裝與更新", navConfig: "配置與環境", navCommands: "指令大全", navSkills: "技能與插件系統", navEcosystem: "技能生態系", navSessions: "會話與代理", navAutomation: "自動化任務", navAdvanced: "高級功能", navChannels: "渠道配置", navMemory: "記憶系統", navTroubleshooting: "故障排查", navDeveloper: "開發者指南", navSecurity: "安全與合規",
             welcomeTitle: "Clawdbot (Moltbot) 操作詳細指南", welcomeDesc: "歡迎使用 Clawdbot (Moltbot)。這是一個強大的 AI 自動化工具，旨在幫助你自動化日常任務。",
             quickStartTitle: "👋 快速開始", quickStartDesc: "Clawdbot 不僅僅是一個對話機器人，它是你的數位操作員。", tipLabel: "💡 小撇步：", welcomeTip: "建議新手從左側開始閱讀。",
             installTitle: "🚀 安裝與更新", installDesc: "了解如何安裝並保持最新。", initialInstallTitle: "📥 初始安裝", initialInstallDesc: "推薦使用官方一鍵安裝腳本：", onboardingTitle: "第一次啟動：Onboarding", onboardingDesc: "執行以下指令進入引導式設置：",
@@ -358,10 +774,18 @@ clawdhub update --all</code></pre>
             clawdhubTitle: "🛒 ClawdHub 技能管理", clawdhubDesc: "使用官方技能管理器輕鬆安裝：",
             skillApiKeyTitle: "🔑 如何配置 API Key", skillApiKeyDesc: "安裝技能後，若需要 API Key（如 OpenAI, GitHub），請在 moltbot.json 的 skills.entries 中配置：",
             precedenceTitle: "⚖️ 載入優先順序 (Precedence)", preced1: "Workspace 局部技能 (Workspace Skills)", preced2: "用戶全域技能 (~/.clawdbot/skills)", preced3: "內置核心技能 (Bundled Skills)",
-            tgTitle: "🤖 Telegram 與代理管理", tgDesc: "連接消息平台並管理多個 AI 身份。", tgConnTitle: "✈️ Telegram 連接", tgStep1: "從 @BotFather 獲取 Token。", tgStep2: "運行 onboard 指令。", tgStep3: "啟動 Gateway。"
+            tgTitle: "🤖 Telegram 與代理管理", tgDesc: "連接消息平台並管理多個 AI 身份。", tgConnTitle: "✈️ Telegram 連接", tgStep1: "從 @BotFather 獲取 Token。", tgStep2: "運行 onboard 指令。", tgStep3: "啟動 Gateway。",
+            sessionsTitle: "💬 會話與代理管理", sessionsDesc: "理解會話隔離、多代理路由與子代理系統。", sessionConceptTitle: "🧠 會話概念", sessionConceptDesc: "Clawdbot 使用會話隔離來管理不同對話的上下文：", sessionMain: "主會話：", sessionGroup: "群組會話：", sessionSubagent: "子代理：", sessionScopeTitle: "📋 會話範圍控制", dmScopeDesc: "dmScope 選項：", subagentTitle: "🔧 子代理系統", subagentDesc: "使用 /subagents 指令管理子代理：", sessionResetTitle: "🔄 會話重置策略", resetDesc: "重置模式：",
+            automationTitle: "⏰ 自動化與定時任務", automationDesc: "使用 Cron 和 Heartbeat 實現自動化工作流。", cronTitle: "📅 Cron 定時任務", cronDesc: "Cron 是 Gateway 內建的定時器，支援一次性提醒和週期性任務：", heartbeatTitle: "💓 Heartbeat 心跳機制", heartbeatDesc: "Heartbeat 是週期性檢查的批次處理機制，適合多個輕量級任務：", timingRow: "精確時間", batchRow: "批次處理", sessionRow: "主會話上下文", independentRow: "獨立隔離", whenCron: "使用 Cron 當：", whenHeartbeat: "使用 Heartbeat 當：", cronManageTitle: "🔧 Cron 管理指令",
+            advancedTitle: "🚀 高級功能模組", advancedDesc: "探索 Canvas、Nodes、瀏覽器控制等強大功能。", canvasTitle: "🖼️ Canvas 系統", canvasDesc: "Canvas 可以在節點上展示 HTML 頁面並進行快照：", nodesTitle: "📱 Nodes 節點管理", nodesDesc: "Nodes 是連接到 Gateway 的設備（iOS/Android/macOS）：", browserTitle: "🌐 瀏覽器控制", browserDesc: "透過瀏覽器工具自動化網頁操作：", ttsTitle: "🔊 語音合成 (TTS)", ttsDesc: "使用 ElevenLabs 生成自然語音：",
+            channelsTitle: "🔌 渠道深度配置", channelsDesc: "詳細配置各個消息平台的功能與限制。", telegramConfigTitle: "✈️ Telegram 配置", telegramConfigDesc: "Telegram 支援豐富的功能：", tgInline: "內聯按鈕：", tgPoll: "投票：", tgReply: "回覆：", tgReact: "表情反應：", whatsappConfigTitle: "💬 WhatsApp 配置", whatsappConfigDesc: "WhatsApp 使用 Web 協議連接：", discordConfigTitle: "🎮 Discord 配置", discordConfigDesc: "Discord 支援伺服器和語音頻道：",
+            memoryTitle: "🧠 記憶系統", memoryDesc: "理解短期記憶與長期記憶的區別與使用方法。", memoryTypesTitle: "📋 記憶類型", memoryBestTitle: "💡 最佳實踐", memPrac1: "記錄重要事件：", memPrac2: "定期整理：", memPrac3: "安全考量：", memoryUsageTitle: "🔍 記憶檢索", memoryUsageDesc: "AI 會自動檢索相關記憶：",
+            troubleshootingTitle: "🔧 故障排查與調試", troubleshootingDesc: "常見問題與解決方案。", diagnosticTitle: "🩺 診斷工具", commonIssuesTitle: "❓ 常見問題",
+            developerTitle: "💻 開發者指南", developerDesc: "如何開發自定義技能與插件。", skillDevTitle: "📝 開發自定義技能", skillDevDesc: "技能是包含 SKILL.md 的目錄：", pluginDevTitle: "🔌 開發插件", pluginDevDesc: "插件擴展核心功能（新增渠道等）：", devTestTitle: "🧪 測試與調試",
+            securityTitle: "🔒 安全與合規", securityDesc: "保護你的資料與系統安全。", securityAuditTitle: "🛡️ 安全審計", securityAuditDesc: "定期運行安全審計：", securityRulesTitle: "📜 安全規則", secRule1: "訪問控制優先：", secRule2: "沙箱執行：", secRule3: "最小權限：", secRule4: "日誌審計：", incidentTitle: "🚨 事故響應", incidentDesc: "如果懷疑被入侵："
         },
         'zh-CN': {
-            navHome: "首页", navInstall: "安装与更新", navConfig: "配置与环境", navCommands: "指令大全", navSkills: "技能与插件系统", navEcosystem: "技能生态系", navTelegram: "Telegram 设置",
+            navHome: "首页", navInstall: "安装与更新", navConfig: "配置与环境", navCommands: "指令大全", navSkills: "技能与插件系统", navEcosystem: "技能生态系", navSessions: "会话与代理", navAutomation: "自动化任务", navAdvanced: "高级功能", navChannels: "渠道配置", navMemory: "记忆系统", navTroubleshooting: "故障排查", navDeveloper: "开发者指南", navSecurity: "安全与合规",
             welcomeTitle: "Clawdbot (Moltbot) 操作详细指南", welcomeDesc: "欢迎使用 Clawdbot (Moltbot)。这是一个强大的 AI 自动化工具，旨在帮助你自动化日常任务。",
             quickStartTitle: "👋 快速开始", quickStartDesc: "Clawdbot 不仅仅是一个对话机器人，它是你的数字操作员。", tipLabel: "💡 小贴士：", welcomeTip: "建议新手從左侧开始阅读。",
             installTitle: "🚀 安装 with 更新", installDesc: "了解如何安装并保持最新。", initialInstallTitle: "📥 初始安装", initialInstallDesc: "推荐使用官方一键安装脚本：", onboardingTitle: "第一次启动：Onboarding", onboardingDesc: "执行以下指令进入引导式设置：",
@@ -383,10 +807,18 @@ clawdhub update --all</code></pre>
             clawdhubTitle: "🛒 ClawdHub 技能管理", clawdhubDesc: "使用官方技能管理器轻松安装：",
             skillApiKeyTitle: "🔑 如何配置 API Key", skillApiKeyDesc: "安装技能后，若需要 API Key（如 OpenAI, GitHub），请在 moltbot.json 的 skills.entries 中配置：",
             precedenceTitle: "⚖️ 载入优先顺序 (Precedence)", preced1: "Workspace 局部技能 (Workspace Skills)", preced2: "用户全局技能 (~/.clawdbot/skills)", preced3: "内置核心技能 (Bundled Skills)",
-            tgTitle: "🤖 Telegram 与代理管理", tgDesc: "连接消息平台并管理多个 AI 身份。", tgConnTitle: "✈️ Telegram 连接", tgStep1: "从 @BotFather 获取 Token。", tgStep2: "运行 onboard 指令。", tgStep3: "启动 Gateway。"
+            tgTitle: "🤖 Telegram 与代理管理", tgDesc: "连接消息平台并管理多个 AI 身份。", tgConnTitle: "✈️ Telegram 连接", tgStep1: "从 @BotFather 获取 Token。", tgStep2: "运行 onboard 指令。", tgStep3: "启动 Gateway。",
+            sessionsTitle: "💬 会话与代理管理", sessionsDesc: "理解会话隔离、多代理路由与子代理系统。", sessionConceptTitle: "🧠 会话概念", sessionConceptDesc: "Clawdbot 使用会话隔离来管理不同对话的上下文：", sessionMain: "主会话：", sessionGroup: "群组会话：", sessionSubagent: "子代理：", sessionScopeTitle: "📋 会话范围控制", dmScopeDesc: "dmScope 选项：", subagentTitle: "🔧 子代理系统", subagentDesc: "使用 /subagents 指令管理子代理：", sessionResetTitle: "🔄 会话重置策略", resetDesc: "重置模式：",
+            automationTitle: "⏰ 自动化与定时任务", automationDesc: "使用 Cron 和 Heartbeat 实现自动化工作流。", cronTitle: "📅 Cron 定时任务", cronDesc: "Cron 是 Gateway 内置的定时器，支持一次性提醒和周期性任务：", heartbeatTitle: "💓 Heartbeat 心跳机制", heartbeatDesc: "Heartbeat 是周期性检查的批次处理机制，适合多个轻量级任务：", timingRow: "精确时间", batchRow: "批次处理", sessionRow: "主会话上下文", independentRow: "独立隔离", whenCron: "使用 Cron 当：", whenHeartbeat: "使用 Heartbeat 当：", cronManageTitle: "🔧 Cron 管理指令",
+            advancedTitle: "🚀 高级功能模组", advancedDesc: "探索 Canvas、Nodes、浏览器控制等强大功能。", canvasTitle: "🖼️ Canvas 系统", canvasDesc: "Canvas 可以在节点上展示 HTML 页面并进行快照：", nodesTitle: "📱 Nodes 节点管理", nodesDesc: "Nodes 是连接到 Gateway 的设备（iOS/Android/macOS）：", browserTitle: "🌐 浏览器控制", browserDesc: "通过浏览器工具自动化网页操作：", ttsTitle: "🔊 语音合成 (TTS)", ttsDesc: "使用 ElevenLabs 生成自然语音：",
+            channelsTitle: "🔌 渠道深度配置", channelsDesc: "详细配置各个消息平台的功能与限制。", telegramConfigTitle: "✈️ Telegram 配置", telegramConfigDesc: "Telegram 支持丰富的功能：", tgInline: "内联按钮：", tgPoll: "投票：", tgReply: "回复：", tgReact: "表情反应：", whatsappConfigTitle: "💬 WhatsApp 配置", whatsappConfigDesc: "WhatsApp 使用 Web 协议连接：", discordConfigTitle: "🎮 Discord 配置", discordConfigDesc: "Discord 支持服务器和语音频道：",
+            memoryTitle: "🧠 记忆系统", memoryDesc: "理解短期记忆与长期记忆的区别与使用方法。", memoryTypesTitle: "📋 记忆类型", memoryBestTitle: "💡 最佳实践", memPrac1: "记录重要事件：", memPrac2: "定期整理：", memPrac3: "安全考量：", memoryUsageTitle: "🔍 记忆检索", memoryUsageDesc: "AI 会自动检索相关记忆：",
+            troubleshootingTitle: "🔧 故障排查与调试", troubleshootingDesc: "常见问题与解决方案。", diagnosticTitle: "🩺 诊断工具", commonIssuesTitle: "❓ 常见问题",
+            developerTitle: "💻 开发者指南", developerDesc: "如何开发自定义技能与插件。", skillDevTitle: "📝 开发自定义技能", skillDevDesc: "技能是包含 SKILL.md 的目录：", pluginDevTitle: "🔌 开发插件", pluginDevDesc: "插件扩展核心功能（新增渠道等）：", devTestTitle: "🧪 测试与调试",
+            securityTitle: "🔒 安全与合规", securityDesc: "保护你的资料与系统安全。", securityAuditTitle: "🛡️ 安全审计", securityAuditDesc: "定期运行安全审计：", securityRulesTitle: "📜 安全规则", secRule1: "访问控制优先：", secRule2: "沙箱执行：", secRule3: "最小权限：", secRule4: "日志审计：", incidentTitle: "🚨 事故响应", incidentDesc: "如果怀疑被入侵："
         },
         'en': {
-            navHome: "Home", navInstall: "Install & Update", navConfig: "Config & Env", navCommands: "Commands", navSkills: "Skills & Plugins", navEcosystem: "Ecosystem", navTelegram: "Telegram Setup",
+            navHome: "Home", navInstall: "Install & Update", navConfig: "Config & Env", navCommands: "Commands", navSkills: "Skills & Plugins", navEcosystem: "Ecosystem", navSessions: "Sessions & Agents", navAutomation: "Automation", navAdvanced: "Advanced", navChannels: "Channels", navMemory: "Memory", navTroubleshooting: "Troubleshooting", navDeveloper: "Developer", navSecurity: "Security",
             welcomeTitle: "Clawdbot (Moltbot) Detailed Guide", welcomeDesc: "Welcome to Clawdbot. A powerful AI automation tool built to handle your daily tasks.",
             quickStartTitle: "👋 Quick Start", quickStartDesc: "Clawdbot is more than a chatbot; it's your digital operator.", tipLabel: "💡 Pro Tip:", welcomeTip: "New users should start with the Installation guide.",
             installTitle: "🚀 Install & Update", installDesc: "Learn how to install and stay updated.", initialInstallTitle: "📥 Initial Install", initialInstallDesc: "Recommended one-line installer:", onboardingTitle: "First Launch: Onboarding", onboardingDesc: "Run the setup wizard to initialize:",
@@ -408,7 +840,15 @@ clawdhub update --all</code></pre>
             clawdhubTitle: "🛒 ClawdHub Management", clawdhubDesc: "Manage skills via the official manager:",
             skillApiKeyTitle: "🔑 How to Config API Keys", skillApiKeyDesc: "After installing, if a skill needs an API Key (e.g. OpenAI), config it in moltbot.json under skills.entries:",
             precedenceTitle: "⚖️ Load Precedence", preced1: "Workspace Local Skills", preced2: "User Global Skills", preced3: "Bundled Core Skills",
-            tgTitle: "🤖 Telegram & Agent Mgmt", tgDesc: "Connect messaging platforms and manage identities.", tgConnTitle: "✈️ Telegram Connection", tgStep1: "Get token from @BotFather.", tgStep2: "Run onboard with token.", tgStep3: "Start the Gateway."
+            tgTitle: "🤖 Telegram & Agent Mgmt", tgDesc: "Connect messaging platforms and manage identities.", tgConnTitle: "✈️ Telegram Connection", tgStep1: "Get token from @BotFather.", tgStep2: "Run onboard with token.", tgStep3: "Start the Gateway.",
+            sessionsTitle: "💬 Sessions & Agents", sessionsDesc: "Understand session isolation, multi-agent routing, and sub-agents.", sessionConceptTitle: "🧠 Session Concepts", sessionConceptDesc: "Clawdbot uses session isolation to manage conversation contexts:", sessionMain: "Main session:", sessionGroup: "Group sessions:", sessionSubagent: "Sub-agents:", sessionScopeTitle: "📋 Session Scope Control", dmScopeDesc: "dmScope options:", subagentTitle: "🔧 Sub-agent System", subagentDesc: "Use /subagents command to manage sub-agents:", sessionResetTitle: "🔄 Session Reset Policy", resetDesc: "Reset modes:",
+            automationTitle: "⏰ Automation & Scheduled Tasks", automationDesc: "Use Cron and Heartbeat for automated workflows.", cronTitle: "📅 Cron Jobs", cronDesc: "Cron is Gateway's built-in scheduler supporting one-shot and recurring tasks:", heartbeatTitle: "💓 Heartbeat Mechanism", heartbeatDesc: "Heartbeat batches periodic checks for lightweight tasks:", timingRow: "Precise timing", batchRow: "Batch processing", sessionRow: "Main session context", independentRow: "Independent isolation", whenCron: "Use Cron when:", whenHeartbeat: "Use Heartbeat when:", cronManageTitle: "🔧 Cron Management",
+            advancedTitle: "🚀 Advanced Features", advancedDesc: "Explore Canvas, Nodes, browser control, and more.", canvasTitle: "🖼️ Canvas System", canvasDesc: "Canvas displays HTML pages on nodes with snapshots:", nodesTitle: "📱 Nodes Management", nodesDesc: "Nodes are devices connected to Gateway (iOS/Android/macOS):", browserTitle: "🌐 Browser Control", browserDesc: "Automate web interactions via browser tools:", ttsTitle: "🔊 Text-to-Speech (TTS)", ttsDesc: "Generate natural voices with ElevenLabs:",
+            channelsTitle: "🔌 Deep Channel Config", channelsDesc: "Detailed configuration for each messaging platform.", telegramConfigTitle: "✈️ Telegram Config", telegramConfigDesc: "Telegram supports rich features:", tgInline: "Inline buttons:", tgPoll: "Polls:", tgReply: "Replies:", tgReact: "Reactions:", whatsappConfigTitle: "💬 WhatsApp Config", whatsappConfigDesc: "WhatsApp connects via Web protocol:", discordConfigTitle: "🎮 Discord Config", discordConfigDesc: "Discord supports servers and voice channels:",
+            memoryTitle: "🧠 Memory System", memoryDesc: "Understand short-term vs long-term memory.", memoryTypesTitle: "📋 Memory Types", memoryBestTitle: "💡 Best Practices", memPrac1: "Record important events:", memPrac2: "Periodic review:", memPrac3: "Security considerations:", memoryUsageTitle: "🔍 Memory Retrieval", memoryUsageDesc: "AI automatically retrieves relevant memories:",
+            troubleshootingTitle: "🔧 Troubleshooting & Debug", troubleshootingDesc: "Common issues and solutions.", diagnosticTitle: "🩺 Diagnostic Tools", commonIssuesTitle: "❓ Common Issues",
+            developerTitle: "💻 Developer Guide", developerDesc: "How to develop custom skills and plugins.", skillDevTitle: "📝 Custom Skills", skillDevDesc: "Skills are directories with SKILL.md:", pluginDevTitle: "🔌 Plugins", pluginDevDesc: "Plugins extend core functionality:", devTestTitle: "🧪 Testing & Debugging",
+            securityTitle: "🔒 Security & Compliance", securityDesc: "Protect your data and system.", securityAuditTitle: "🛡️ Security Audit", securityAuditDesc: "Run regular security audits:", securityRulesTitle: "📜 Security Rules", secRule1: "Access control first:", secRule2: "Sandbox execution:", secRule3: "Least privilege:", secRule4: "Log auditing:", incidentTitle: "🚨 Incident Response", incidentDesc: "If compromised:"
         }
     };
 
